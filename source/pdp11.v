@@ -21,6 +21,7 @@ reg [MWIDTH:0]mem[MSIZE:0];
 `include"read_word.v"
 `include"write_word.v"
 `include"double_operand.v"
+`include"single_operand.v"
 
 
 initial
@@ -64,9 +65,11 @@ begin
       3'b000:
       begin
         if(instruction[11])
+					begin
           $display("The Instruction is of Type Single Operand Instruction");
           if(single_operand(instruction))
 						$display("Invalid Instruction");
+					end
         else
           begin
           $display("The instruction is of Type Condition Branch Instruction OR Zero Operand");

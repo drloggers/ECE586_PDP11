@@ -18,8 +18,8 @@ reg [15:0]R[7:0];
 reg [15:0]PSW;
 reg [MWIDTH:0]mem[MSIZE:0];
 
-`include"src_word.v"
-`include"dst_word.v"
+`include"read_word.v"
+`include"write_word.v"
 `include"double_operand.v"
 
 

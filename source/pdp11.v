@@ -65,7 +65,8 @@ begin
       begin
         if(instruction[11])
           $display("The Instruction is of Type Single Operand Instruction");
-          
+          if(single_operand(instruction))
+						$display("Invalid Instruction");
         else
           begin
           $display("The instruction is of Type Condition Branch Instruction OR Zero Operand");

@@ -3,13 +3,31 @@
 function single_operand;
   input[15:0]instruction;
 	reg [15:0]result;
+	reg [7:0]temp;
 
 	begin
 		single_operand = 0;
 			case(instruction[10:6])
 				SWAB:
 				begin
-			
+					result = read_word(instruction[5:3],instruction[2:0]);
+					temp = result[7:0];
+					result = {temp,result[15:8]};
+					if(write_word(instruction[5:3],instruction[2:0],result))
+						$display("Error during CLR instruction");
+
+					if(result[7:0] == 0)
+						PSW[ZERO] = 1;
+					else 
+						PSW[ZERO] = 0;
+
+					if(result[7] == 1)
+          	PSW[NEGATIVE] = 1;
+					else
+						PSW[NEGATIVE] = 0;
+
+						PSW[OVERFLOW] = 0;
+						PSW[CARRY] = 0;
 				end
 				CLR:
 				begin
@@ -42,10 +60,10 @@ function single_operand;
 				end
 					INC:
 				begin
-					$display("%b :::::::::: %o",read_word(instruction[5:3],instruction[2:0]),15'o77777);
+					//$display("%b :::::::::: %o",read_word(instruction[5:3],instruction[2:0]),15'o77777);
 					result = read_word(instruction[5:3],instruction[2:0]);
 					if(write_word(instruction[5:3],instruction[2:0],result+1))
-						$display("Error during COM instruction");
+						$display("Error during INC instruction");
 
 					if((result+1) == 0)
 						PSW[ZERO] = 1;
@@ -66,10 +84,10 @@ function single_operand;
 
 					DEC:
 				begin
-					$display("%b",~read_word(instruction[5:3],instruction[2:0]));
+					//$display("%b",read_word(instruction[5:3],instruction[2:0]));
 					result = read_word(instruction[5:3],instruction[2:0]);
 					if(write_word(instruction[5:3],instruction[2:0],result-1))
-						$display("Error during COM instruction");
+						$display("Error during DEC instruction");
 
 					if((result-1) == 0)
 						PSW[ZERO] = 1;
@@ -89,10 +107,10 @@ function single_operand;
 
 					NEG:
 				begin
-					$display("%b",~read_word(instruction[5:3],instruction[2:0]));
+					//$display("%b",~read_word(instruction[5:3],instruction[2:0]));
 					result = -(read_word(instruction[5:3],instruction[2:0]));
 					if(write_word(instruction[5:3],instruction[2:0],result))
-						$display("Error during COM instruction");
+						$display("Error during NEG instruction");
 					
 					if(result == 0)
 					begin
@@ -120,7 +138,7 @@ function single_operand;
 				begin
 					result = read_word(instruction[5:3],instruction[2:0]);
 					if(write_word(instruction[5:3],instruction[2:0], result + PSW[CARRY]))
-						$display("Error during COM instruction");
+						$display("Error during ADC instruction");
 
 					if((result + PSW[CARRY]) == 0)
 						PSW[ZERO] = 1;
@@ -147,7 +165,7 @@ function single_operand;
 				begin
 						result = read_word(instruction[5:3],instruction[2:0]);
 					if(write_word(instruction[5:3],instruction[2:0],result - PSW[CARRY]))
-						$display("Error during COM instruction");
+						$display("Error during SBC instruction");
 
 						if((result - PSW[CARRY]) == 0)
 						PSW[ZERO] = 1;
@@ -175,25 +193,91 @@ function single_operand;
 					//if(write_word(instruction[5:3],instruction[2:0],read_word(instruction[5:3],instruction[2:0])))
 					//	$display("Error during COM instruction");
 				end
-
-          ROR:
+				ROR:
 				begin
-			
+			  temp = {PSW[CARRY], read_word(instruction[5:3],instruction[2:0]);
+			  tempbit = temp[0];
+			  temp = temp >> 1;
+			  PSW[CARRY] = tempbit;
+			  if(write_word(instruction[5:3],instruction[2:0],temp[15:0]))
+			    $display("Error during ROR instruction");  
+			    if(temp[15:0] == {16{1b'0}})
+						PSW[ZERO] = 1;
+					else 
+						PSW[ZERO] = 0;
+
+					if(temp[15] == 1)
+          	PSW[NEGATIVE] = 1;
+					else
+						PSW[NEGATIVE] = 0;
+
+						PSW[OVERFLOW] = PSW[NEGATIVE]^PSW[CARRY];
 				end
 
 					ROL:
 				begin
-			
-				end
+				tempbit = PSW[CARRY];
+			  temp = {PSW[CARRY], read_word(instruction[5:3],instruction[2:0);
+        temp = temp << 1;
+        PSW[CARRY] = temp[16];
+        temp[0] = tempbit;
+        if(write_word(instruction[5:3],instruction[2:0],temp[15:0]))
+        $display("Error during ROL instruction");  
+			    if(temp[15:0] == {16{1b'0}})
+						PSW[ZERO] = 1;
+					else 
+						PSW[ZERO] = 0;
 
+					if(temp[15] == 1)
+          	PSW[NEGATIVE] = 1;
+					else
+						PSW[NEGATIVE] = 0;
+
+						PSW[OVERFLOW] = PSW[NEGATIVE]^PSW[CARRY];
+				end
+				
+				
 				  ASR:
 				begin
-			
+			   temp = {read_word(instruction[5:3],instruction[2:0], PSW[CARRY]);
+			   tempbit = temp[15];
+			   temp = temp >> 1;
+			   PSW[CARRY] = temp[0];
+			   temp[16] = tempbit;
+			   if(write_word(instruction[5:3],instruction[2:0],temp[16:1]))  
+			   $display("Error during ASR instruction");  
+			    if(temp[15:0] == {16{1b'0}})
+						PSW[ZERO] = 1;
+					else 
+						PSW[ZERO] = 0;
+
+					if(temp[15] == 1)
+          	PSW[NEGATIVE] = 1;
+					else
+						PSW[NEGATIVE] = 0;
+
+						PSW[OVERFLOW] = PSW[NEGATIVE]^PSW[CARRY];
 				end
 
 					ASL:
 				begin
-			
+			   temp = {PSW[CARRY], read_word(instruction[5:3],instruction[2:0);
+			   temp = temp << 1;
+			   PSW[CARRY] = temp[16];
+			   temp[0] = 1'b0;
+			   if(write_word(instruction[5:3],instruction[2:0],temp[15:0]))
+			     $display("Error during ASL instruction");  
+			    if(temp[15:0] == {16{1b'0}})
+						PSW[ZERO] = 1;
+					else 
+						PSW[ZERO] = 0;
+
+					if(temp[15] == 1)
+          	PSW[NEGATIVE] = 1;
+					else
+						PSW[NEGATIVE] = 0;
+
+						PSW[OVERFLOW] = PSW[NEGATIVE]^PSW[CARRY];
 				end
 
 					MARK:		// byte variant of this has different functionality, take note

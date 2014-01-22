@@ -27,19 +27,7 @@ parameter REGISTER               = 3'b000,
           INDEX_DEFERRED         = 3'b111;
                 
                 
-//Parameters of Double Operand Instructions 
-parameter MOV  = 4'b0001,
-          MOVB = 4'b1001,
-          CMP  = 4'b0010,
-          CMPB = 4'b1010,
-          BIT  = 4'b0011,
-          BITB = 4'b1011,
-          BIC  = 4'b0100,
-          BICB = 4'b1100,
-          BIS  = 4'b0101,
-          BISB = 4'b1101,
-          ADD  = 4'b0110,
-          SUB  = 4'b1110;   //Parameters of Double Operand Instructions & one and half operand instruction 
+//Parameters of Double Operand Instructions & one and half operand instruction 
 parameter MOV  = 4'b0001,
           MOVB = 4'b1001,
           CMP  = 4'b0010,

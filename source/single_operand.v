@@ -40,8 +40,6 @@ function single_operand;
 						PSW[OVERFLOW] = 0;
 						PSW[CARRY] = 1;
 				end
-
-				end
 					INC:
 				begin
 					$display("%b :::::::::: %o",read_word(instruction[5:3],instruction[2:0]),15'o77777);
@@ -93,7 +91,7 @@ function single_operand;
 				begin
 					$display("%b",~read_word(instruction[5:3],instruction[2:0]));
 					result = -(read_word(instruction[5:3],instruction[2:0]));
-					if(write_word(instruction[5:3],instruction[2:0],result)))
+					if(write_word(instruction[5:3],instruction[2:0],result))
 						$display("Error during COM instruction");
 					
 					if(result == 0)
@@ -139,7 +137,7 @@ function single_operand;
 					else
 						PSW[NEGATIVE] = 0;
 
-					if(result = 15'o0777777 && PSW[CARRY] = 1)
+					if(result == 15'o0777777 && PSW[CARRY] == 1)
 						PSW[OVERFLOW] = 1;
 					else
 						PSW[OVERFLOW] = 0; 

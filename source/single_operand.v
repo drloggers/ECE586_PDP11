@@ -3,7 +3,9 @@
 function single_operand;
   input[15:0]instruction;
 	reg [15:0]result;
-	reg [7:0]temp;
+	reg [17:0]temp;
+	reg [7:0]swapingReg;
+	reg tempbit;
 
 	begin
 		single_operand = 0;
@@ -11,8 +13,8 @@ function single_operand;
 				SWAB:
 				begin
 					result = read_word(instruction[5:3],instruction[2:0]);
-					temp = result[7:0];
-					result = {temp,result[15:8]};
+					swapingReg = result[7:0];
+					result = {swapingReg,result[15:8]};
 					if(write_word(instruction[5:3],instruction[2:0],result))
 						$display("Error during CLR instruction");
 
@@ -195,13 +197,13 @@ function single_operand;
 				end
 				ROR:
 				begin
-			  temp = {PSW[CARRY], read_word(instruction[5:3],instruction[2:0]);
+			  temp = {PSW[CARRY], read_word(instruction[5:3],instruction[2:0])};
 			  tempbit = temp[0];
 			  temp = temp >> 1;
 			  PSW[CARRY] = tempbit;
 			  if(write_word(instruction[5:3],instruction[2:0],temp[15:0]))
 			    $display("Error during ROR instruction");  
-			    if(temp[15:0] == {16{1b'0}})
+			    if(temp[15:0] == {16{1'b0}})
 						PSW[ZERO] = 1;
 					else 
 						PSW[ZERO] = 0;
@@ -217,13 +219,13 @@ function single_operand;
 					ROL:
 				begin
 				tempbit = PSW[CARRY];
-			  temp = {PSW[CARRY], read_word(instruction[5:3],instruction[2:0);
+			  temp = {PSW[CARRY], read_word(instruction[5:3],instruction[2:0])};
         temp = temp << 1;
         PSW[CARRY] = temp[16];
         temp[0] = tempbit;
         if(write_word(instruction[5:3],instruction[2:0],temp[15:0]))
         $display("Error during ROL instruction");  
-			    if(temp[15:0] == {16{1b'0}})
+			    if(temp[15:0] == {16{1'b0}})
 						PSW[ZERO] = 1;
 					else 
 						PSW[ZERO] = 0;
@@ -239,14 +241,14 @@ function single_operand;
 				
 				  ASR:
 				begin
-			   temp = {read_word(instruction[5:3],instruction[2:0], PSW[CARRY]);
+			   temp = {read_word(instruction[5:3],instruction[2:0]), PSW[CARRY]};
 			   tempbit = temp[15];
 			   temp = temp >> 1;
 			   PSW[CARRY] = temp[0];
 			   temp[16] = tempbit;
 			   if(write_word(instruction[5:3],instruction[2:0],temp[16:1]))  
 			   $display("Error during ASR instruction");  
-			    if(temp[15:0] == {16{1b'0}})
+			    if(temp[15:0] == {16{1'b0}})
 						PSW[ZERO] = 1;
 					else 
 						PSW[ZERO] = 0;
@@ -261,13 +263,13 @@ function single_operand;
 
 					ASL:
 				begin
-			   temp = {PSW[CARRY], read_word(instruction[5:3],instruction[2:0);
+			   temp = {PSW[CARRY], read_word(instruction[5:3],instruction[2:0])};
 			   temp = temp << 1;
 			   PSW[CARRY] = temp[16];
 			   temp[0] = 1'b0;
 			   if(write_word(instruction[5:3],instruction[2:0],temp[15:0]))
 			     $display("Error during ASL instruction");  
-			    if(temp[15:0] == {16{1b'0}})
+			    if(temp[15:0] == {16{1'b0}})
 						PSW[ZERO] = 1;
 					else 
 						PSW[ZERO] = 0;

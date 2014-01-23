@@ -45,13 +45,13 @@ function write_word;
       
       INDEX:
       begin
-          mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}]=data;
+           {mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}+1],mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}]}=data;
          R[PC]=R[PC]+2;
       end
       
      INDEX_DEFERRED:
       begin
-          mem[mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}]]=data;
+          {mem[mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}+1]],mem[mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}]]}=data;
          R[PC]=R[PC]+2;
       end
       

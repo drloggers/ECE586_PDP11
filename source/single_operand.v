@@ -72,7 +72,7 @@ function single_operand;
 					else 
 						PSW[ZERO] = 0;
 
-					if(result == 15'o077777)
+					if(result == 16'o077777)
 						PSW[OVERFLOW] = 1;
 					else
 						PSW[OVERFLOW] = 0;
@@ -96,7 +96,7 @@ function single_operand;
 					else 
 						PSW[ZERO] = 0;
 
-					if(result == 15'o100000)
+					if(result == 16'o100000)
 						PSW[CARRY] = 1;
 					else
 						PSW[CARRY] = 0;
@@ -130,7 +130,7 @@ function single_operand;
 					else
 						PSW[NEGATIVE] = 0;
 
-					if(result == 15'o100000)
+					if(result == 16'o100000)
 						PSW[OVERFLOW] = 1;
 					else
 						PSW[OVERFLOW] = 0;
@@ -147,7 +147,7 @@ function single_operand;
 					else 
 						PSW[ZERO] = 0;
 
-					if(result == 15'o177777 && PSW[CARRY] == 1)
+					if(result == 16'o177777 && PSW[CARRY] == 1)
 						PSW[CARRY] = 1;
 					else
 						PSW[CARRY] = 0;
@@ -157,7 +157,7 @@ function single_operand;
 					else
 						PSW[NEGATIVE] = 0;
 
-					if(result == 15'o0777777 && PSW[CARRY] == 1)
+					if(result == 16'o077777 && PSW[CARRY] == 1)
 						PSW[OVERFLOW] = 1;
 					else
 						PSW[OVERFLOW] = 0; 

@@ -96,6 +96,31 @@ function Branch_instruction;
             begin
               R[PC]= (R[PC]+(instruction[7:0]*2));
             end
+            
+          CLC:
+          PSW[CARRY] = 1'b0;
+          
+          CLV:
+          PSW[OVERFLOW] = 1'b0;
+          
+          CLZ:
+          PSW[ZERO] = 1'b0;
+          
+          CLN:
+          PSW[NEGATIVE] = 1'b0;
+          
+          SEC:
+          PSW[CARRY] = 1'b1;
+          
+          SEV:
+          PSW[OVERFLOW] = 1'b1;
+        
+          SEZ:
+          PSW[ZERO] = 1'b1;
+          
+          SEN:
+          PSW[NEGATIVE] = 1'b1;
+             
       endcase
      end
   endfunction    

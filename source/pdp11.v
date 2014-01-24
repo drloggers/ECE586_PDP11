@@ -7,6 +7,7 @@ integer data_file;
 integer scan_file,eof;
 integer mem_fill_ptr;
 
+
 reg [7:0]character;
 reg [15:0]instruction;
 
@@ -22,11 +23,14 @@ reg [MWIDTH:0]mem[MSIZE:0];
 `include"write_word.v"
 `include"double_operand.v"
 `include"single_operand.v"
+`include"branch.v"
+`include"jump.v"
 
 
 initial
 begin
   
+		
 
   
     data_file=$fopen("input.ascii","r");
@@ -66,14 +70,23 @@ begin
       begin
         if(instruction[11])
 					begin
+							if(instruction[11:9] == 3'b100)
+							begin
+									$display("The Instruction is JSR Instruction");
+									if(JSR_instruction(instruction))
+										$display("");$display("Invalid Instruction");
+							end
+					else begin
           $display("The Instruction is of Type Single Operand Instruction");
           if(single_operand(instruction))
 						$display("Invalid Instruction");
 					end
+					end
         else
           begin
           $display("The instruction is of Type Condition Branch Instruction OR Zero Operand");
-          
+          if(Branch_instruction(instruction))
+						$display("Invalid Instruction");
         end
       end
       
@@ -89,13 +102,8 @@ begin
       if(double_operand(instruction))
         $display("Invalid Instruction");
             
-    end
+    	end
     endcase
     end
-    end
-
-   
-
-
-
+end
 endmodule 

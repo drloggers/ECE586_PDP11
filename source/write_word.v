@@ -42,24 +42,21 @@ function write_word;
         R[destination]=R[destination]-2;
        {mem[R[destination]+1],mem[R[destination]]}=data;
       end
-      
-      INDEX:
-      begin
-           {mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}+1],mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}]}=data;
-         R[PC]=R[PC]+2;
-      end
-      
-     INDEX_DEFERRED:
-      begin
-          {mem[mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}+1]],mem[mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}]]}=data;
-         R[PC]=R[PC]+2;
-      end
-      
-      default:
-      begin
-        //Error. 
-        write_word=1;
-      end
+      			INDEX:
+			begin
+		    mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}]=data;
+		    R[PC]=R[PC]+2;
+		  end
+    		 INDEX_DEFERRED:
+		  begin
+	      mem[mem[R[destination]+{mem[R[PC]+1],mem[R[PC]]}]]=data;
+		    R[PC]=R[PC]+2;
+	    end
+        default:
+	    begin
+      //Error. 
+      write_word=1;
+      end
     endcase
     end
 endfunction  

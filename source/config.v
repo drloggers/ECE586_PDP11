@@ -26,6 +26,8 @@ parameter REGISTER               = 3'b000,
           INDEX                  = 3'b110,
           INDEX_DEFERRED         = 3'b111;
                 
+//Parameters for zero operand instruction
+parameter HALT  =  16'o000000;
                 
 //Parameters of Double Operand Instructions & one and half operand instruction 
 parameter MOV  = 4'b0001,
@@ -81,4 +83,7 @@ parameter SWAB = 10'b0000000000,
 					MFPI = 5'b10101,
 					MTPI = 5'b10110,
 					SXT	 = 5'b10111;
+					
+
+			
 					

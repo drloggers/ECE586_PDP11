@@ -184,7 +184,7 @@ function single_operand;
 					else
 						PSW[NEGATIVE] = 0;
 
-					if((result - PSW[CARRY]) == 15'o100000)
+					if((result - PSW[CARRY]) == 16'o100000)
 						PSW[OVERFLOW] = 1;
 					else
 						PSW[OVERFLOW] = 0;
@@ -307,4 +307,18 @@ function single_operand;
 			endcase
 
 	end
+endfunction
+
+function JSR_instruction;
+input [15:0]instruction;
+reg [15:0]temp;
+reg [15:0]result;
+begin
+	temp = instruction[5:0];
+	result = read_word(instruction[5:3],instruction[2:0]);
+	push(read_word(0,instruction[8:6]));
+	R[instruction[8:6]] = R[PC];
+	R[PC] = temp;
+	JSR_instruction = 0;
+end
 endfunction

@@ -40,18 +40,16 @@ function [15:0]read_word;
         R[source]=R[source]-2;
        read_word={mem[R[source]+1],mem[R[source]]};
       end
-      
-      INDEX:
-      begin
-         read_word= {mem[R[source]+{mem[R[PC]+1],mem[R[PC]]}+1],mem[R[source]+{mem[R[PC]+1],mem[R[PC]]}]};
-         R[PC]=R[PC]+2;
-      end
-      
-     INDEX_DEFERRED:
-      begin
-         read_word= {mem[mem[R[source]+{mem[R[PC]+1],mem[R[PC]]}+1]],mem[mem[R[source]+{mem[R[PC]+1],mem[R[PC]]}]]};
-         R[PC]=R[PC]+2;
-      end
-    endcase
+
+   		INDEX:
+			begin
+			  read_word= {mem[R[source]+{mem[R[PC]+1],mem[R[PC]]}+1],mem[R[source]+{mem[R[PC]+1],mem[R[PC]]}]};
+			  R[PC]=R[PC]+2;		  end
+    			INDEX_DEFERRED:
+		  begin
+	     read_word= {mem[mem[R[source]+{mem[R[PC]+1],mem[R[PC]]}+1]],mem[mem[R[source]+{mem[R[PC]+1],mem[R[PC]]}]]};
+		   R[PC]=R[PC]+2;
+	    end
+    endcase
     end
 endfunction  

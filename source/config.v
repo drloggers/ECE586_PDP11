@@ -61,7 +61,8 @@ parameter BR  = 4'b0001,
           
 
 // Parameters for Jump instruction
-
+parameter JMP = 3'b001,
+					RTS = 3'b010;
 
 //Parameters of Single Operand Instructions
 parameter SWAB = 10'b0000000000,

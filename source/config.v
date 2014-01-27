@@ -61,9 +61,14 @@ parameter BR  = 4'b0001,
           
 
 // Parameters for Jump instruction
+<<<<<<< HEAD
 parameter JMP = 3'b001,
 					RTS = 3'b010;
 
+=======
+
+
+>>>>>>> origin/Tejas
 //Parameters of Single Operand Instructions
 parameter SWAB = 10'b0000000000,
 					CLR  = 5'b01000,
@@ -83,3 +88,17 @@ parameter SWAB = 10'b0000000000,
 					MTPI = 5'b10110,
 					SXT	 = 5'b10111;
 					
+<<<<<<< HEAD
+=======
+// Conditional Codes
+
+parameter  	CLC = 16'o000241,
+          	CLV = 16'o000242,
+          	CLZ = 16'o000244,
+         		CLN = 16'o000250,
+         	 	SEC = 16'o000261,
+         	 	SEV = 16'o000261,
+          	SEZ = 16'o000264,
+         	 	SEN = 16'o000270;
+
+>>>>>>> origin/Tejas

@@ -97,7 +97,7 @@ function Branch_instruction;
               R[PC]= (R[PC]+(instruction[7:0]*2));
             end
             
-          /*CLC:
+          CLC:
           PSW[CARRY] = 1'b0;
           
           CLV:
@@ -120,7 +120,7 @@ function Branch_instruction;
           
           SEN:
           PSW[NEGATIVE] = 1'b1;
-*/             
+            
       endcase
      end
   endfunction    
